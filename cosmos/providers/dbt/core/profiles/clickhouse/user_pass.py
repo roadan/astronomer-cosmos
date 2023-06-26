@@ -52,7 +52,6 @@ class ClickhouseUserPasswordProfileMapping(BaseProfileMapping):
             "sslmode": self.conn.extra_dejson.get("sslmode"),
             **self.profile_args,
             # password should always get set as env var
-            
         }
 
         return self.filter_null(profile)
