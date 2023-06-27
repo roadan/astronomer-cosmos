@@ -13,27 +13,24 @@ class ClickhouseUserPasswordProfileMapping(BaseProfileMapping):
     """
 
     airflow_connection_type: str = "generic"
-    default_port = 8123
+    default_port = 9000
 
     required_fields = [
         "host",
-        "user",
-        "password",
-        "port",
-        # "dbname",
+        "login",
         "schema",
+        "clickhouse",
     ]
     secret_fields = [
         "password",
     ]
     airflow_param_mapping = {
         "host": "host",
-        "user": "login",
+        "login": "login",
         "password": "password",
         "port": "port",
         "schema": "schema",
-        # "keepalives_idle": "extra.keepalives_idle",
-        # "sslmode": "extra.sslmode",
+        "clickhouse": "extra.clickhouse",
     }
 
     @property
@@ -42,14 +39,15 @@ class ClickhouseUserPasswordProfileMapping(BaseProfileMapping):
         profile = {
             "type": "clickhouse",
             "schema": self.conn.schema,
-            "user": self.conn.login,
+            "login": self.conn.login,
             "password": self.get_env_var_format("password"),
-            "driver": "http",
+            "driver": self.conn.extra_dejson.get("driver") or "native",
             "port": self.conn.port or self.default_port,
             "host": self.conn.host,
-            "secure": False,
+            "secure": self.conn.extra_dejson.get("secure") or False,
             "keepalives_idle": self.conn.extra_dejson.get("keepalives_idle"),
             "sslmode": self.conn.extra_dejson.get("sslmode"),
+            "clickhouse": self.conn.extra_dejson.get("clickhouse"),
             **self.profile_args,
             # password should always get set as env var
         }
