@@ -40,6 +40,7 @@ class ClickhouseUserPasswordProfileMapping(BaseProfileMapping):
             "type": "clickhouse",
             "schema": self.conn.schema,
             "login": self.conn.login,
+            # password should always get set as env var
             "password": self.get_env_var_format("password"),
             "driver": self.conn.extra_dejson.get("driver") or "native",
             "port": self.conn.port or self.default_port,
@@ -49,7 +50,6 @@ class ClickhouseUserPasswordProfileMapping(BaseProfileMapping):
             "sslmode": self.conn.extra_dejson.get("sslmode"),
             "clickhouse": self.conn.extra_dejson.get("clickhouse"),
             **self.profile_args,
-            # password should always get set as env var
         }
 
         return self.filter_null(profile)

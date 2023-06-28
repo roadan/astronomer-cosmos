@@ -190,3 +190,13 @@ Certificate
     :undoc-members:
     :members:
     :show-inheritance:
+
+Clickhouse
+--------
+
+Username and Password
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: cosmos.providers.dbt.core.profiles.Clickhouse.ClickhouseUserPasswordProfileMapping
+    :undoc-members:
+    :members:
